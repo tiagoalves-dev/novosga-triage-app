@@ -9,6 +9,56 @@
       </router-link>
     </div>
     <!--
+      Welcome page
+    -->
+    <article class="welcome" v-if="page=='welcome'" :style="{'background-color': config.pageBgColor, 'color': config.pageFontColor}">
+      <header :style="{'background-color': config.headerBgColor}">
+        <img :src="logoSrc" alt="">
+      </header>
+      <section class="welcome">
+        <button type="button" class="button is-xlarge is-block" @click="goTo('customer')" :style="buttonStyle(config)">
+          {{ 'home.start.button'|trans }}
+        </button>
+      </section>
+    </article>
+
+    <!--
+      Customer data
+    -->
+    <article class="customer" v-if="page=='customer'" :style="{'background-color': config.pageBgColor, 'color': config.pageFontColor}">
+      <header :style="{'background-color': config.headerBgColor}">
+        <img :src="logoSrc" alt="">
+      </header>
+      <section class="customer">
+        <form @submit.prevent="save">
+          <div class="field">
+            <label for="" class="label">
+              {{ 'home.customer.name'|trans }}
+            </label>
+            <div class="control">
+              <input class="input is-medium" type="text" placeholder="Insira seu nome completo aqui" v-model="customer.name">
+              <!-- Alterar Placeholder no dicionário -->
+            </div>
+          </div>
+          <div class="field">
+            <label for="" class="label">
+              {{ 'home.customer.id'|trans }}
+            </label>
+            <div class="control">
+              <input class="input is-medium" type="text" placeholder="RG ou CPF (Opcional)" v-model="customer.id">
+              <!-- Alterar Placeholder no dicionário -->
+            </div>
+          </div>
+            <div class="control">
+              <button type="button" class="button is-xlarge is-block" @click="startService(customer.name, customer.id)" :style="buttonStyle(config)">
+                {{ 'home.start.button'|trans }}
+              </button>
+            </div>
+        </form>
+      </section>
+    </article>
+
+    <!--
       Unity departments
     -->
     <article v-if="page=='departments'" :style="{'background-color': config.pageBgColor, 'color': config.pageFontColor}">
@@ -310,7 +360,9 @@
     data () {
       return {
         busy: false,
+        start: 'welcome',
         firstPage: 'allServices',
+        customerPage: 'customer',
         page: '',
         enabledServices: [],
         enabledDepartments: [],
@@ -337,6 +389,10 @@
         const url = this.config.logo || '/static/images/logo.png'
         return `url(${url})`
       },
+      logoSrc () {
+        const url = this.config.logo || '/static/images/logo.png'
+        return `${url}`
+      },
       lowerPriority () {
         let priority = this.priorities[0]
         this.priorities.forEach(p => {
@@ -358,7 +414,7 @@
     },
     methods: {
       begin () {
-        this.page = this.firstPage
+        this.page = this.start
         this.department = null
         this.service = null
         this.ticketInfo = null
@@ -366,7 +422,7 @@
       },
 
       tick () {
-        if (this.page !== this.firstPage) {
+        if (this.page !== (this.customerPage || this.start)) {
           if (this.timer === null) {
             this.timer = this.startTime
           } else {
@@ -374,7 +430,7 @@
           }
           if (this.timer <= 0) {
             this.timer = null
-            this.page = this.firstPage
+            this.page = this.start
           }
         }
       },
@@ -385,6 +441,14 @@
         this.departmentServices = this.enabledServices.filter(s => {
           return s.servicoUnidade.departamento && s.servicoUnidade.departamento.id === department.id
         })
+      },
+
+      goTo (page) {
+        this.page = page
+      },
+
+      startService (name, id) {
+        console.log(name, id)
       },
 
       selectService (su) {
@@ -552,6 +616,7 @@
               this.firstPage = 'departments'
             } else {
               this.firstPage = 'allServices'
+              // Mudar este bloco de código
             }
           } else {
             this.firstPage = 'service'
@@ -625,7 +690,13 @@
         background-color: rgba(0,0,0,1)
       a
         color: #ffffff
-
+  .welcome, .customer
+    display: flex
+    header, section
+      width: 50%
+      display: flex
+      align-items: center
+      justify-content: center
   article
     width: 100%
     height: 100%
@@ -633,7 +704,7 @@
     left: 0
     position: fixed
     header
-      padding: 1vh 2vh
+      padding: 3vh
       h1
         color: #ffffff
         font-size: 3rem
@@ -643,7 +714,7 @@
         background-repeat: no-repeat
         background-size: contain
     section
-      padding: 1vw
+      padding: 3vw
       p
         text-align: center
         font-size: 1.5rem

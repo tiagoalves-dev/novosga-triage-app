@@ -57,5 +57,8 @@
   "home.services.subtitle": "Por favor seleccione servicio",
   "home.service.subtitle": "Tareas del servicio",
   "home.print.title": "Imprimiendo",
-  "home.print.subtitle": "Por favor espere mientras se imprimie el ticket"
+  "home.print.subtitle": "Por favor espere mientras se imprimie el ticket",
+  "home.start.button": "Iniciar el Autoservicio",
+  "home.customer.name": "Nombre Completo",
+  "home.customer.id": "Documento Personal"
 }

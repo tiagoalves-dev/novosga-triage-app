@@ -57,5 +57,8 @@
   "home.services.subtitle": "Escolha o serviço desejado",
   "home.service.subtitle": "Atividades executadas pelo serviço escolhido",
   "home.print.title": "Imprimindo",
-  "home.print.subtitle": "Por favor aguarde a impressão da sua senha de atendimento"
+  "home.print.subtitle": "Por favor aguarde a impressão da sua senha de atendimento",
+  "home.start.button": "Iniciar Autoatendimento",
+  "home.customer.name": "Nome Completo",
+  "home.customer.id": "Documento Pessoal"
 }

@@ -57,5 +57,8 @@
   "home.services.subtitle": "Please choose the service",
   "home.service.subtitle": "Service tasks",
   "home.print.title": "Printing",
-  "home.print.subtitle": "Please wait while the ticket print"
+  "home.print.subtitle": "Please wait while the ticket print",
+  "home.start.button": "Start Self-Service",
+  "home.customer.name": "Full Name",
+  "home.customer.id": "Personal ID"
 }
