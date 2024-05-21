@@ -82,13 +82,25 @@ class Client {
   }
 
   ticket (token, unityId, serviceId, priorityId, customerId, customerName) {
+  // ticket (token, unityId, serviceId, priorityId, customerId, customerName, customerAddress) {
     const data = {
       unidade: unityId,
       servico: serviceId,
       prioridade: priorityId,
       cliente: {
-        nome: customerId,
-        documento: customerName
+        nome: customerName,
+        documento: customerId,
+        endereco: {}
+        // endereco: {
+        //   pais: null,
+        //   estado: null,
+        //   cidade: null,
+        //   cep: null,
+        //   logradouro: null,
+        //   numero: null,
+        //   complemento: null
+        // }
+        // endereco: customerAddress
       }
     }
 

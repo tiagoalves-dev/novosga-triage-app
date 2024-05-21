@@ -31,6 +31,7 @@ export const newTicket = ({ state, commit, rootState }, { unityId, serviceId, pr
 
     api
       .ticket(rootState.auth.accessToken, unityId, serviceId, priorityId, customer.id, customer.name)
+      // .ticket(rootState.auth.accessToken, unityId, serviceId, priorityId, customer.id, customer.name, customer.address)
       .then(data => {
         commit('updateLastTicket', data)
         resolve(data)

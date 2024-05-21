@@ -36,7 +36,7 @@
               {{ 'home.customer.name'|trans }}
             </label>
             <div class="control">
-              <input class="input is-medium" type="text" placeholder="Insira seu nome completo aqui" v-model="customer.name">
+              <input class="input is-medium" type="text" placeholder="Insira seu nome completo aqui" @input="onInputChange" v-model="customer.name">
               <!-- Alterar Placeholder no dicionário -->
             </div>
           </div>
@@ -56,6 +56,7 @@
             </div>
         </form>
       </section>
+      <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="input"/>
     </article>
 
     <!--
@@ -257,6 +258,7 @@
   import auth from '@/store/modules/auth'
   import axios from 'axios'
   import { log } from '@/util/functions'
+  import SimpleKeyboard from './SimpleKeyboard'
 
   let remote = null
   if (!process.env.IS_WEB) {
@@ -357,6 +359,9 @@
 
   export default {
     name: 'home',
+    components: {
+      SimpleKeyboard
+    },
     data () {
       return {
         busy: false,
@@ -374,11 +379,13 @@
         customer: {
           id: '',
           name: ''
+          // address: {}
         },
         ticketInfo: null,
         timer: null,
         startTime: null,
-        showMenu: true
+        showMenu: '',
+        input: ''
       }
     },
     computed: {
@@ -445,10 +452,13 @@
 
       goTo (page) {
         this.page = page
+        console.log(this.customer)
       },
 
       startService (name, id) {
-        console.log(name, id)
+        this.customer.name = name
+        this.customer.id = id
+        this.page = this.firstPage
       },
 
       selectService (su) {
@@ -625,6 +635,15 @@
 
           this.begin()
         })
+      },
+      onChange (input) {
+        this.input = input
+      },
+      onKeyPress (button) {
+        console.log('button', button)
+      },
+      onInputChange (input) {
+        this.input = input.target.value
       }
     },
     mounted () {
@@ -697,6 +716,8 @@
       display: flex
       align-items: center
       justify-content: center
+      img
+        max-width: 45%
   article
     width: 100%
     height: 100%
@@ -743,4 +764,12 @@
       font-size: 1.5rem
       ul
         padding: 2rem 0
+  .simple-keyboard
+    max-width: 850px
+  .hg-theme-default
+    position: absolute
+    bottom: 50px
+    margin: auto
+    left: 0
+    right: 0
 </style>
