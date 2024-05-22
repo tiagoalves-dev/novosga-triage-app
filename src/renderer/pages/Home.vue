@@ -30,14 +30,14 @@
         <img :src="logoSrc" alt="">
       </header>
       <section class="customer">
-        <form @submit.prevent="save">
+        <!-- <form @submit.prevent="save">
           <div class="field">
             <label for="" class="label">
               {{ 'home.customer.name'|trans }}
             </label>
             <div class="control">
-              <input class="input is-medium" type="text" placeholder="Insira seu nome completo aqui" @input="onInputChange" v-model="customer.name">
-              <!-- Alterar Placeholder no dicionário -->
+              <input class="input is-medium" type="text" placeholder="Insira seu nome completo aqui" v-model="customer.name">
+              Alterar Placeholder no dicionário
             </div>
           </div>
           <div class="field">
@@ -46,7 +46,7 @@
             </label>
             <div class="control">
               <input class="input is-medium" type="text" placeholder="RG ou CPF (Opcional)" v-model="customer.id">
-              <!-- Alterar Placeholder no dicionário -->
+              Alterar Placeholder no dicionário
             </div>
           </div>
             <div class="control">
@@ -54,9 +54,28 @@
                 {{ 'home.start.button'|trans }}
               </button>
             </div>
+        </form> -->
+        <form @submit.prevent="save">
+          <div v-for="key in Object.keys(inputs)" :key="key">
+            <InputComponent
+              :inputs="inputs"
+              :inputName="key"
+              @onInputFocus="onInputFocus"
+              @onInputChange="onInputChange"
+            />
+          </div>
+          <div class="control">
+              <button type="button" class="button is-xlarge is-block" @click="startService(customer.name, customer.id)" :style="buttonStyle(config)">
+                {{ 'home.start.button'|trans }}
+              </button>
+          </div>
         </form>
       </section>
-      <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="input"/>
+      <SimpleKeyboard
+        @onChange="onChange"
+        @onKeyPress="onKeyPress"
+        :input="input"
+        :inputName="inputName"/>
     </article>
 
     <!--
@@ -258,7 +277,8 @@
   import auth from '@/store/modules/auth'
   import axios from 'axios'
   import { log } from '@/util/functions'
-  import SimpleKeyboard from './SimpleKeyboard'
+  import SimpleKeyboard from './components/SimpleKeyboard'
+  import InputComponent from './components/InputComponent'
 
   let remote = null
   if (!process.env.IS_WEB) {
@@ -360,7 +380,8 @@
   export default {
     name: 'home',
     components: {
-      SimpleKeyboard
+      SimpleKeyboard,
+      InputComponent
     },
     data () {
       return {
@@ -385,7 +406,11 @@
         timer: null,
         startTime: null,
         showMenu: '',
-        input: ''
+        inputs: {
+          name: '',
+          id: ''
+        },
+        inputName: 'name'
       }
     },
     computed: {
@@ -459,6 +484,7 @@
         this.customer.name = name
         this.customer.id = id
         this.page = this.firstPage
+        console.log('Nome do cliente: ', name + 'Documento do cliente: ' + id)
       },
 
       selectService (su) {
@@ -637,13 +663,20 @@
         })
       },
       onChange (input) {
-        this.input = input
+        this.inputs[this.inputName] = input
+        this.customer[this.inputName] = input
+        console.log(this.customer[this.inputName])
       },
       onKeyPress (button) {
         console.log('button', button)
       },
       onInputChange (input) {
-        this.input = input.target.value
+        console.log('Input changed directly:', input.target.id)
+        this.inputs[input.target.id] = input.target.value
+      },
+      onInputFocus (input) {
+        console.log('Focused input:', input.target.id)
+        this.inputName = input.target.id
       }
     },
     mounted () {

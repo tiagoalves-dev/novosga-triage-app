@@ -15,6 +15,9 @@
       },
       input: {
         type: String
+      },
+      inputName: {
+        type: String
       }
     },
     data: () => ({
@@ -23,7 +26,8 @@
     mounted () {
       this.keyboard = new Keyboard(this.keyboardClass, {
         onChange: this.onChange,
-        onKeyPress: this.onKeyPress
+        onKeyPress: this.onKeyPress,
+        inputName: this.inputName
       })
     },
     methods: {
@@ -48,7 +52,16 @@
       }
     },
     watch: {
+      inputName (inputName) {
+        console.log('SimpleKeyboard: inputName updated', inputName)
+        this.keyboard.setOptions({inputName})
+      },
       input (input) {
+        console.log(
+          'SimpleKeyboard: input Updated',
+          this.keyboard.options.inputName,
+          input
+        )
         this.keyboard.setInput(input)
       }
     }
