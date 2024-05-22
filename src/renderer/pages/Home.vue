@@ -543,6 +543,7 @@
           .catch((e) => {
             log(e)
           })
+        this.resetForm()
       },
 
       print (ticket) {
@@ -660,6 +661,15 @@
           }
 
           this.begin()
+        })
+      },
+      resetForm () {
+        console.log('Reseting the form')
+        var self = this
+        // you need this because *this* will refer to Object.keys below`
+        // Iterate through each object field, key is name of the object field`
+        Object.keys(this.inputs).forEach(function (key, index) {
+          self.inputs[key] = ''
         })
       },
       onChange (input) {
