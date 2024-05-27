@@ -30,31 +30,6 @@
         <img :src="logoSrc" alt="">
       </header>
       <section class="customer">
-        <!-- <form @submit.prevent="save">
-          <div class="field">
-            <label for="" class="label">
-              {{ 'home.customer.name'|trans }}
-            </label>
-            <div class="control">
-              <input class="input is-medium" type="text" placeholder="Insira seu nome completo aqui" v-model="customer.name">
-              Alterar Placeholder no dicionário
-            </div>
-          </div>
-          <div class="field">
-            <label for="" class="label">
-              {{ 'home.customer.id'|trans }}
-            </label>
-            <div class="control">
-              <input class="input is-medium" type="text" placeholder="RG ou CPF (Opcional)" v-model="customer.id">
-              Alterar Placeholder no dicionário
-            </div>
-          </div>
-            <div class="control">
-              <button type="button" class="button is-xlarge is-block" @click="startService(customer.name, customer.id)" :style="buttonStyle(config)">
-                {{ 'home.start.button'|trans }}
-              </button>
-            </div>
-        </form> -->
         <form @submit.prevent="save">
           <div v-for="key in Object.keys(inputs)" :key="key">
             <InputComponent
