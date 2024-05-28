@@ -50,7 +50,8 @@
         @onChange="onChange"
         @onKeyPress="onKeyPress"
         :input="input"
-        :inputName="inputName"/>
+        :inputName="inputName"
+        />
     </article>
 
     <!--
@@ -650,17 +651,17 @@
       onChange (input) {
         this.inputs[this.inputName] = input
         this.customer[this.inputName] = input
-        console.log(this.customer[this.inputName])
+        // console.log(this.customer[this.inputName])
       },
       onKeyPress (button) {
-        console.log('button', button)
+        // console.log('button', button)
       },
       onInputChange (input) {
-        console.log('Input changed directly:', input.target.id)
+        // console.log('Input changed directly:', input.target.id)
         this.inputs[input.target.id] = input.target.value
       },
       onInputFocus (input) {
-        console.log('Focused input:', input.target.id)
+        // console.log('Focused input:', input.target.id)
         this.inputName = input.target.id
       }
     },

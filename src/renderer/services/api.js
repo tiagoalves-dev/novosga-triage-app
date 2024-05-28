@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 class Client {
-  constructor (server) {
+  constructor(server) {
     let host = server + ''
 
     if (!host.endsWith('/')) {
@@ -11,15 +11,15 @@ class Client {
     this.endpoint = host + 'api'
   }
 
-  request (url, config) {
+  request(url, config) {
     config.withCredentials = true
 
     return new Promise((resolve, reject) => {
-      axios
-        .request(`${this.endpoint}/${url}`, config)
-        .then(response => {
+      axios.request(`${this.endpoint}/${url}`, config).then(
+        response => {
           resolve(response.data)
-        }, error => {
+        },
+        error => {
           let message = error.message
           if (error.response) {
             message = error.response.statusText
@@ -32,11 +32,12 @@ class Client {
             }
           }
           reject(message)
-        })
+        }
+      )
     })
   }
 
-  priorities (token) {
+  priorities(token) {
     const config = {
       headers: {
         Authorization: 'Bearer ' + token
@@ -45,7 +46,7 @@ class Client {
     return this.request(`prioridades`, config)
   }
 
-  unities (token) {
+  unities(token) {
     const config = {
       headers: {
         Authorization: 'Bearer ' + token
@@ -54,7 +55,7 @@ class Client {
     return this.request(`unidades`, config)
   }
 
-  services (token, unityId) {
+  services(token, unityId) {
     const config = {
       headers: {
         Authorization: 'Bearer ' + token
@@ -63,7 +64,7 @@ class Client {
     return this.request(`unidades/${unityId}/servicos`, config)
   }
 
-  service (token, serviceId) {
+  service(token, serviceId) {
     const config = {
       headers: {
         Authorization: 'Bearer ' + token
@@ -72,7 +73,7 @@ class Client {
     return this.request(`servicos/${serviceId}`, config)
   }
 
-  departments (token) {
+  departments(token) {
     const config = {
       headers: {
         Authorization: 'Bearer ' + token
@@ -81,7 +82,7 @@ class Client {
     return this.request(`departamentos`, config)
   }
 
-  ticket (token, unityId, serviceId, priorityId, customerId, customerName) {
+  ticket(token, unityId, serviceId, priorityId, customerId, customerName) {
     const data = {
       unidade: unityId,
       servico: serviceId,
@@ -103,7 +104,7 @@ class Client {
     return this.request(`distribui`, config)
   }
 
-  print (token, ticket) {
+  print(token, ticket) {
     const config = {
       headers: {
         Authorization: 'Bearer ' + token,
