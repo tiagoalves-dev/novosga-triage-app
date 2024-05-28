@@ -10,7 +10,7 @@
     name: 'SimpleKeyboard',
     props: {
       keyboardClass: {
-        default: 'simple-keyboard',
+        default: 'simple-keyboard skb-container',
         type: String
       },
       input: {

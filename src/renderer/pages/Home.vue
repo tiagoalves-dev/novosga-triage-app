@@ -46,11 +46,15 @@
           </div>
         </form>
       </section>
-      <SimpleKeyboard
+      <!-- <SimpleKeyboard
         @onChange="onChange"
         @onKeyPress="onKeyPress"
         :input="input"
-        :inputName="inputName"/>
+        :inputName="inputName"/> -->
+      <SimpleKeyboardFull
+        @onChange="onChange"
+        @onKeyPress="onKeyPress"
+        :input="input"/>
     </article>
 
     <!--
@@ -253,6 +257,7 @@
   import axios from 'axios'
   import { log } from '@/util/functions'
   import SimpleKeyboard from './components/SimpleKeyboard'
+  import SimpleKeyboardFull from './components/SimpleKeyboardFull'
   import InputComponent from './components/InputComponent'
 
   let remote = null
@@ -356,6 +361,7 @@
     name: 'home',
     components: {
       SimpleKeyboard,
+      SimpleKeyboardFull,
       InputComponent
     },
     data () {
@@ -400,6 +406,9 @@
         const url = this.config.logo || '/static/images/logo.png'
         return `${url}`
       },
+      // Não sei o motivo desta função, ela pega o a primeira prioridade (0) do objeto priorities.
+      // o problema é que este objeto recebe apenas as prioridades com peso > (maior que) 0 (zero)
+      // e a prioridade Normal sempre tem o peso 0 (zero), então ela não está incluída no objeto
       lowerPriority () {
         let priority = this.priorities[0]
         this.priorities.forEach(p => {
@@ -426,6 +435,7 @@
         this.service = null
         this.ticketInfo = null
         this.timer = null
+        console.log(this)
       },
 
       tick () {
@@ -489,11 +499,17 @@
       ticket (priority) {
         this.busy = true
         let promise = Promise.resolve()
-
+        // console.log('priority: ', priority)
+        // console.log('priority.id ', priority.id)
+        // console.log('this.lowerPriority.id', this.lowerPriority.id)
         const data = {
           unityId: this.config.unity,
           serviceId: this.servicoUnidade.servico.id,
-          priorityId: (priority ? priority.id : this.lowerPriority.id),
+          // código da última versão:
+          // priorityId: (priority ? priority.id : this.lowerPriority.id),
+
+          // fallback pro código anterior, caso a função não receba a prioridade ele vai como normal (1)
+          priorityId: (priority ? priority.id : 1),
           customer: this.customer
         }
         if (this.config.preTicketWebHook) {
@@ -518,6 +534,7 @@
           .catch((e) => {
             log(e)
           })
+        console.log(data)
         this.resetForm()
       },
 
@@ -782,9 +799,8 @@
       font-size: 1.5rem
       ul
         padding: 2rem 0
-  .simple-keyboard
-    max-width: 850px
-  .hg-theme-default
+  .skb-container, .keyboardContainer
+    max-width: 1024px
     position: absolute
     bottom: 50px
     margin: auto
